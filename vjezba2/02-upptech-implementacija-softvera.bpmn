@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_02_upptech_implementacija_softvera" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Pool_UPPTech" name="UPPTech" processRef="Process_Pool_UPPTech" />
+    <bpmn:participant id="Pool_CrazyTech" name="CrazyTech" processRef="Process_Pool_CrazyTech" />
+    <bpmn:messageFlow id="MsgFlow_1" name="upit za razvoj" sourceRef="P_T4" targetRef="C_Start" />
+    <bpmn:messageFlow id="MsgFlow_2" name="procjena troškova" sourceRef="C_T2" targetRef="P_T5" />
+    <bpmn:messageFlow id="MsgFlow_3" name="potvrda" sourceRef="P_T6" targetRef="C_M1" />
+    <bpmn:messageFlow id="MsgFlow_4" name="softver implementiran" sourceRef="C_End" targetRef="P_T7" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Pool_UPPTech" name="UPPTech" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Pool_UPPTech">
+      <bpmn:lane id="Lane_Pool_UPPTech_1" name="Management tim">
+        <bpmn:flowNodeRef>P_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_T2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_T5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_G2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_End2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_T6</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Pool_UPPTech_2" name="IT tim">
+        <bpmn:flowNodeRef>P_T1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_G1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_T3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_End1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_T4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_T7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>P_End3</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="P_Start" name="Utvrđena potreba za novim softverom">
+      <bpmn:outgoing>Flow_Pool_UPPTech_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="P_T1" name="Istražiti dostupne softvere na tržištu">
+      <bpmn:incoming>Flow_Pool_UPPTech_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="P_G1" name="Postoji odgovarajuće rješenje?">
+      <bpmn:incoming>Flow_Pool_UPPTech_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Pool_UPPTech_6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="P_T2" name="Dogovoriti kupnju softvera">
+      <bpmn:incoming>Flow_Pool_UPPTech_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:manualTask id="P_T3" name="Instalirati softver na server tvrtke">
+      <bpmn:incoming>Flow_Pool_UPPTech_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_5</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:endEvent id="P_End1" name="Softver instaliran">
+      <bpmn:incoming>Flow_Pool_UPPTech_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sendTask id="P_T4" name="Poslati upit za razvoj tvrtki CrazyTech">
+      <bpmn:incoming>Flow_Pool_UPPTech_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_7</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="P_T5" name="Zaprimiti procjenu troškova razvoja">
+      <bpmn:incoming>Flow_Pool_UPPTech_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_8</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:exclusiveGateway id="P_G2" name="Ponuda prihvaćena?">
+      <bpmn:incoming>Flow_Pool_UPPTech_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Pool_UPPTech_10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="P_End2" name="Ponuda odbijena">
+      <bpmn:incoming>Flow_Pool_UPPTech_9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sendTask id="P_T6" name="Poslati potvrdu ponude">
+      <bpmn:incoming>Flow_Pool_UPPTech_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_11</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="P_T7" name="Zaprimiti obavijest o implementaciji softvera">
+      <bpmn:incoming>Flow_Pool_UPPTech_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_UPPTech_12</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:endEvent id="P_End3" name="Softver implementiran">
+      <bpmn:incoming>Flow_Pool_UPPTech_12</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_1" sourceRef="P_Start" targetRef="P_T1" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_2" sourceRef="P_T1" targetRef="P_G1" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_3" name="Da" sourceRef="P_G1" targetRef="P_T2" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_4" sourceRef="P_T2" targetRef="P_T3" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_5" sourceRef="P_T3" targetRef="P_End1" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_6" name="Ne" sourceRef="P_G1" targetRef="P_T4" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_7" sourceRef="P_T4" targetRef="P_T5" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_8" sourceRef="P_T5" targetRef="P_G2" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_9" name="Ne" sourceRef="P_G2" targetRef="P_End2" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_10" name="Da" sourceRef="P_G2" targetRef="P_T6" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_11" sourceRef="P_T6" targetRef="P_T7" />
+    <bpmn:sequenceFlow id="Flow_Pool_UPPTech_12" sourceRef="P_T7" targetRef="P_End3" />
+  </bpmn:process>
+  <bpmn:process id="Process_Pool_CrazyTech" name="CrazyTech" isExecutable="false">
+    <bpmn:startEvent id="C_Start" name="Zaprimljen upit za razvoj (e-pošta)">
+      <bpmn:outgoing>Flow_Pool_CrazyTech_1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="C_Start_def" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="C_T1" name="Procijeniti troškove razvoja">
+      <bpmn:incoming>Flow_Pool_CrazyTech_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_CrazyTech_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="C_T2" name="Poslati procjenu troškova UPPTechu">
+      <bpmn:incoming>Flow_Pool_CrazyTech_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_CrazyTech_3</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:intermediateCatchEvent id="C_M1" name="Zaprimljena potvrda ponude">
+      <bpmn:incoming>Flow_Pool_CrazyTech_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_CrazyTech_4</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="C_M1_def" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="C_T3" name="Implementirati softver">
+      <bpmn:incoming>Flow_Pool_CrazyTech_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_CrazyTech_14</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="C_End" name="Softver isporučen">
+      <bpmn:incoming>Flow_Pool_CrazyTech_14</bpmn:incoming>
+      <bpmn:messageEventDefinition id="C_End_def" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_1" sourceRef="C_Start" targetRef="C_T1" />
+    <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_2" sourceRef="C_T1" targetRef="C_T2" />
+    <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_3" sourceRef="C_T2" targetRef="C_M1" />
+    <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_4" sourceRef="C_M1" targetRef="C_Sub" />
+    <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_13" sourceRef="C_Sub" targetRef="C_T3" />
+    <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_14" sourceRef="C_T3" targetRef="C_End" />
+    <bpmn:subProcess id="C_Sub" name="Razvoj softverskog rješenja">
+      <bpmn:incoming>Flow_Pool_CrazyTech_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_CrazyTech_13</bpmn:outgoing>
+      <bpmn:startEvent id="C_Ss" name="Početak razvoja">
+        <bpmn:outgoing>Flow_Pool_CrazyTech_5</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:userTask id="C_Sa" name="Definirati zahtjeve">
+        <bpmn:incoming>Flow_Pool_CrazyTech_5</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_CrazyTech_6</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:userTask id="C_Sb" name="Dizajnirati softver">
+        <bpmn:incoming>Flow_Pool_CrazyTech_6</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_CrazyTech_7</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:exclusiveGateway id="C_SG" name="">
+        <bpmn:incoming>Flow_Pool_CrazyTech_7</bpmn:incoming>
+        <bpmn:incoming>Flow_Pool_CrazyTech_12</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_CrazyTech_8</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:userTask id="C_Sc" name="Razviti softver">
+        <bpmn:incoming>Flow_Pool_CrazyTech_8</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_CrazyTech_9</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:userTask id="C_Sd" name="Testirati softver">
+        <bpmn:incoming>Flow_Pool_CrazyTech_9</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_CrazyTech_10</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:exclusiveGateway id="C_SX" name="Testiranje uspješno?">
+        <bpmn:incoming>Flow_Pool_CrazyTech_10</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_CrazyTech_11</bpmn:outgoing>
+        <bpmn:outgoing>Flow_Pool_CrazyTech_12</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:endEvent id="C_Se" name="Razvoj završen">
+        <bpmn:incoming>Flow_Pool_CrazyTech_11</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_5" sourceRef="C_Ss" targetRef="C_Sa" />
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_6" sourceRef="C_Sa" targetRef="C_Sb" />
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_7" sourceRef="C_Sb" targetRef="C_SG" />
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_8" sourceRef="C_SG" targetRef="C_Sc" />
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_9" sourceRef="C_Sc" targetRef="C_Sd" />
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_10" sourceRef="C_Sd" targetRef="C_SX" />
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_11" name="Da" sourceRef="C_SX" targetRef="C_Se" />
+      <bpmn:sequenceFlow id="Flow_Pool_CrazyTech_12" name="Ne" sourceRef="C_SX" targetRef="C_SG" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Pool_UPPTech_di" bpmnElement="Pool_UPPTech" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="2970" height="756" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Pool_UPPTech_2_di" bpmnElement="Lane_Pool_UPPTech_2" isHorizontal="true">
+        <dc:Bounds x="190" y="436" width="2940" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Pool_UPPTech_1_di" bpmnElement="Lane_Pool_UPPTech_1" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="2940" height="356" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_Start_di" bpmnElement="P_Start">
+        <dc:Bounds x="272" y="240" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="245" y="280" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_T1_di" bpmnElement="P_T1">
+        <dc:Bounds x="390" y="596" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_G1_di" bpmnElement="P_G1" isMarkerVisible="true">
+        <dc:Bounds x="565" y="611" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="535" y="665" width="110" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_T2_di" bpmnElement="P_T2">
+        <dc:Bounds x="690" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_T3_di" bpmnElement="P_T3">
+        <dc:Bounds x="840" y="486" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_End1_di" bpmnElement="P_End1">
+        <dc:Bounds x="1022" y="508" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="995" y="548" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_T4_di" bpmnElement="P_T4">
+        <dc:Bounds x="690" y="596" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_T5_di" bpmnElement="P_T5">
+        <dc:Bounds x="1140" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_G2_di" bpmnElement="P_G2" isMarkerVisible="true">
+        <dc:Bounds x="1315" y="233" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1285" y="287" width="110" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_End2_di" bpmnElement="P_End2">
+        <dc:Bounds x="1472" y="130" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1445" y="170" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_T6_di" bpmnElement="P_T6">
+        <dc:Bounds x="1440" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_T7_di" bpmnElement="P_T7">
+        <dc:Bounds x="1740" y="596" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_End3_di" bpmnElement="P_End3">
+        <dc:Bounds x="1922" y="618" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1895" y="658" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_1_di" bpmnElement="Flow_Pool_UPPTech_1">
+        <di:waypoint x="308" y="258" />
+        <di:waypoint x="360" y="258" />
+        <di:waypoint x="360" y="636" />
+        <di:waypoint x="390" y="636" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_2_di" bpmnElement="Flow_Pool_UPPTech_2">
+        <di:waypoint x="490" y="636" />
+        <di:waypoint x="565" y="636" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_3_di" bpmnElement="Flow_Pool_UPPTech_3">
+        <di:waypoint x="590" y="611" />
+        <di:waypoint x="590" y="258" />
+        <di:waypoint x="690" y="258" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="600" y="533" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_4_di" bpmnElement="Flow_Pool_UPPTech_4">
+        <di:waypoint x="790" y="258" />
+        <di:waypoint x="810" y="258" />
+        <di:waypoint x="810" y="526" />
+        <di:waypoint x="840" y="526" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_5_di" bpmnElement="Flow_Pool_UPPTech_5">
+        <di:waypoint x="940" y="526" />
+        <di:waypoint x="1022" y="526" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_6_di" bpmnElement="Flow_Pool_UPPTech_6">
+        <di:waypoint x="615" y="636" />
+        <di:waypoint x="690" y="636" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="623" y="612" width="40" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_7_di" bpmnElement="Flow_Pool_UPPTech_7">
+        <di:waypoint x="790" y="636" />
+        <di:waypoint x="1110" y="636" />
+        <di:waypoint x="1110" y="258" />
+        <di:waypoint x="1140" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_8_di" bpmnElement="Flow_Pool_UPPTech_8">
+        <di:waypoint x="1240" y="258" />
+        <di:waypoint x="1315" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_9_di" bpmnElement="Flow_Pool_UPPTech_9">
+        <di:waypoint x="1340" y="233" />
+        <di:waypoint x="1340" y="148" />
+        <di:waypoint x="1472" y="148" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1310" y="173" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_10_di" bpmnElement="Flow_Pool_UPPTech_10">
+        <di:waypoint x="1365" y="258" />
+        <di:waypoint x="1440" y="258" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1382" y="233" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_11_di" bpmnElement="Flow_Pool_UPPTech_11">
+        <di:waypoint x="1540" y="258" />
+        <di:waypoint x="1710" y="258" />
+        <di:waypoint x="1710" y="636" />
+        <di:waypoint x="1740" y="636" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_UPPTech_12_di" bpmnElement="Flow_Pool_UPPTech_12">
+        <di:waypoint x="1840" y="636" />
+        <di:waypoint x="1922" y="636" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Pool_CrazyTech_di" bpmnElement="Pool_CrazyTech" isHorizontal="true">
+        <dc:Bounds x="160" y="916" width="2970" height="240" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Start_di" bpmnElement="C_Start">
+        <dc:Bounds x="722" y="1018" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="695" y="1058" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_T1_di" bpmnElement="C_T1">
+        <dc:Bounds x="990" y="996" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_T2_di" bpmnElement="C_T2">
+        <dc:Bounds x="1140" y="996" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_M1_di" bpmnElement="C_M1">
+        <dc:Bounds x="1472" y="1018" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1445" y="1058" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_T3_di" bpmnElement="C_T3">
+        <dc:Bounds x="2790" y="996" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_End_di" bpmnElement="C_End">
+        <dc:Bounds x="2972" y="1018" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2945" y="1058" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Sub_di" bpmnElement="C_Sub" isExpanded="true">
+        <dc:Bounds x="1597" y="968" width="1136" height="135" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Ss_di" bpmnElement="C_Ss">
+        <dc:Bounds x="1622" y="1020" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1601" y="1060" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Sa_di" bpmnElement="C_Sa">
+        <dc:Bounds x="1740" y="998" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Sb_di" bpmnElement="C_Sb">
+        <dc:Bounds x="1890" y="998" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_SG_di" bpmnElement="C_SG" isMarkerVisible="true">
+        <dc:Bounds x="2065" y="1013" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Sc_di" bpmnElement="C_Sc">
+        <dc:Bounds x="2190" y="998" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Sd_di" bpmnElement="C_Sd">
+        <dc:Bounds x="2340" y="998" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_SX_di" bpmnElement="C_SX" isMarkerVisible="true">
+        <dc:Bounds x="2515" y="1013" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2479" y="981" width="101" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="C_Se_di" bpmnElement="C_Se">
+        <dc:Bounds x="2672" y="1020" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2652" y="1060" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_5_di" bpmnElement="Flow_Pool_CrazyTech_5">
+        <di:waypoint x="1658" y="1038" />
+        <di:waypoint x="1740" y="1038" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_6_di" bpmnElement="Flow_Pool_CrazyTech_6">
+        <di:waypoint x="1840" y="1038" />
+        <di:waypoint x="1890" y="1038" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_7_di" bpmnElement="Flow_Pool_CrazyTech_7">
+        <di:waypoint x="1990" y="1038" />
+        <di:waypoint x="2065" y="1038" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_12_di" bpmnElement="Flow_Pool_CrazyTech_12">
+        <di:waypoint x="2540" y="1063" />
+        <di:waypoint x="2540" y="1091" />
+        <di:waypoint x="2090" y="1091" />
+        <di:waypoint x="2090" y="1063" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2310" y="1073" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_8_di" bpmnElement="Flow_Pool_CrazyTech_8">
+        <di:waypoint x="2115" y="1038" />
+        <di:waypoint x="2190" y="1038" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_9_di" bpmnElement="Flow_Pool_CrazyTech_9">
+        <di:waypoint x="2290" y="1038" />
+        <di:waypoint x="2340" y="1038" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_10_di" bpmnElement="Flow_Pool_CrazyTech_10">
+        <di:waypoint x="2440" y="1038" />
+        <di:waypoint x="2515" y="1038" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_11_di" bpmnElement="Flow_Pool_CrazyTech_11">
+        <di:waypoint x="2565" y="1038" />
+        <di:waypoint x="2672" y="1038" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2602" y="1017" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_1_di" bpmnElement="Flow_Pool_CrazyTech_1">
+        <di:waypoint x="758" y="1036" />
+        <di:waypoint x="990" y="1036" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_2_di" bpmnElement="Flow_Pool_CrazyTech_2">
+        <di:waypoint x="1090" y="1036" />
+        <di:waypoint x="1140" y="1036" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_3_di" bpmnElement="Flow_Pool_CrazyTech_3">
+        <di:waypoint x="1240" y="1036" />
+        <di:waypoint x="1472" y="1036" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_4_di" bpmnElement="Flow_Pool_CrazyTech_4">
+        <di:waypoint x="1508" y="1036" />
+        <di:waypoint x="1597" y="1036" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_13_di" bpmnElement="Flow_Pool_CrazyTech_13">
+        <di:waypoint x="2733" y="1036" />
+        <di:waypoint x="2790" y="1036" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_CrazyTech_14_di" bpmnElement="Flow_Pool_CrazyTech_14">
+        <di:waypoint x="2890" y="1036" />
+        <di:waypoint x="2972" y="1036" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_1_di" bpmnElement="MsgFlow_1">
+        <di:waypoint x="740" y="676" />
+        <di:waypoint x="740" y="1018" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="757" y="743" width="65" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_2_di" bpmnElement="MsgFlow_2">
+        <di:waypoint x="1190" y="996" />
+        <di:waypoint x="1190" y="298" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1216" y="953" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_3_di" bpmnElement="MsgFlow_3">
+        <di:waypoint x="1490" y="298" />
+        <di:waypoint x="1490" y="1018" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1500" y="353" width="37" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_4_di" bpmnElement="MsgFlow_4">
+        <di:waypoint x="2990" y="1018" />
+        <di:waypoint x="2990" y="876" />
+        <di:waypoint x="1790" y="876" />
+        <di:waypoint x="1790" y="676" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2995" y="956" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

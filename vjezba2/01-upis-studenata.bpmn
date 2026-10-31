@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_01_upis_studenata" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.1">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Pool_NISpVU" name="NISpVU (Postani student)" />
+    <bpmn:participant id="Pool_Uni" name="Sveučilište" processRef="Process_Pool_Uni" />
+    <bpmn:messageFlow id="MsgFlow_1" name="rang-liste" sourceRef="Pool_NISpVU" targetRef="U_Start" />
+    <bpmn:messageFlow id="MsgFlow_2" name="obavijest o nedostacima" sourceRef="U_T2" targetRef="Pool_NISpVU" />
+    <bpmn:messageFlow id="MsgFlow_3" name="dorađena dokumentacija" sourceRef="Pool_NISpVU" targetRef="U_T3" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Pool_Uni" name="Sveučilište" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Pool_Uni">
+      <bpmn:lane id="Lane_Pool_Uni_1" name="Ured za studente i upise">
+        <bpmn:flowNodeRef>U_Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_GA</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_T1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_G1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_T2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_T3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_Sub1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_T4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_T5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_Tm1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_G2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_GB</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_T6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_G3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_G4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_T8</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_Tm2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_End</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>U_Sub2</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Pool_Uni_2" name="Pravna služba">
+        <bpmn:flowNodeRef>U_T7</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="U_Start" name="Zaprimljene rang-liste iz NISpVU">
+      <bpmn:outgoing>Flow_Pool_Uni_1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="U_Start_def" />
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="U_GA" name="">
+      <bpmn:incoming>Flow_Pool_Uni_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Pool_Uni_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="U_T1" name="Provjeriti dostavljenu dokumentaciju">
+      <bpmn:incoming>Flow_Pool_Uni_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="U_G1" name="Dokumentacija ispravna?">
+      <bpmn:incoming>Flow_Pool_Uni_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Pool_Uni_7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="U_T2" name="Obavijestiti NISpVU o nedostacima">
+      <bpmn:incoming>Flow_Pool_Uni_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_5</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="U_T3" name="Zaprimiti dorađenu dokumentaciju">
+      <bpmn:incoming>Flow_Pool_Uni_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_6</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:subProcess id="U_Sub1" name="Evaluacija kandidata">
+      <bpmn:incoming>Flow_Pool_Uni_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_8</bpmn:outgoing>
+    </bpmn:subProcess>
+    <bpmn:serviceTask id="U_T4" name="Generirati konačne rang-liste">
+      <bpmn:incoming>Flow_Pool_Uni_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sendTask id="U_T5" name="Obavijestiti kandidate o rezultatima">
+      <bpmn:incoming>Flow_Pool_Uni_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_10</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:intermediateCatchEvent id="U_Tm1" name="Istekao rok za žalbe">
+      <bpmn:incoming>Flow_Pool_Uni_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_11</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="U_Tm1_def" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="U_G2" name="Pristigle žalbe?">
+      <bpmn:incoming>Flow_Pool_Uni_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_12</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Pool_Uni_13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="U_GB" name="">
+      <bpmn:incoming>Flow_Pool_Uni_12</bpmn:incoming>
+      <bpmn:incoming>Flow_Pool_Uni_19</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="U_T6" name="Razmotriti žalbu (prihvatiti ili odbiti)">
+      <bpmn:incoming>Flow_Pool_Uni_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_15</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="U_G3" name="Složena žalba?">
+      <bpmn:incoming>Flow_Pool_Uni_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_16</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Pool_Uni_18</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="U_T7" name="Odlučiti o ponovnom bodovanju ili drugoj metodi evaluacije">
+      <bpmn:incoming>Flow_Pool_Uni_16</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_17</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="U_G4" name="Sve žalbe riješene?">
+      <bpmn:incoming>Flow_Pool_Uni_17</bpmn:incoming>
+      <bpmn:incoming>Flow_Pool_Uni_18</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_19</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Pool_Uni_20</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="U_T8" name="Objaviti konačne rang-liste">
+      <bpmn:incoming>Flow_Pool_Uni_13</bpmn:incoming>
+      <bpmn:incoming>Flow_Pool_Uni_20</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_21</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="U_Tm2" name="Završen jesenski upisni rok">
+      <bpmn:incoming>Flow_Pool_Uni_26</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_27</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="U_Tm2_def" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="U_End" name="Upisi završeni">
+      <bpmn:incoming>Flow_Pool_Uni_27</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_1" sourceRef="U_Start" targetRef="U_GA" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_2" sourceRef="U_GA" targetRef="U_T1" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_3" sourceRef="U_T1" targetRef="U_G1" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_4" name="Ne" sourceRef="U_G1" targetRef="U_T2" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_5" sourceRef="U_T2" targetRef="U_T3" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_6" sourceRef="U_T3" targetRef="U_GA" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_7" name="Da" sourceRef="U_G1" targetRef="U_Sub1" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_8" sourceRef="U_Sub1" targetRef="U_T4" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_9" sourceRef="U_T4" targetRef="U_T5" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_10" sourceRef="U_T5" targetRef="U_Tm1" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_11" sourceRef="U_Tm1" targetRef="U_G2" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_12" name="Da" sourceRef="U_G2" targetRef="U_GB" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_13" name="Ne" sourceRef="U_G2" targetRef="U_T8" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_14" sourceRef="U_GB" targetRef="U_T6" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_15" sourceRef="U_T6" targetRef="U_G3" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_16" name="Da" sourceRef="U_G3" targetRef="U_T7" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_17" sourceRef="U_T7" targetRef="U_G4" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_18" name="Ne" sourceRef="U_G3" targetRef="U_G4" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_19" name="Ne" sourceRef="U_G4" targetRef="U_GB" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_20" name="Da" sourceRef="U_G4" targetRef="U_T8" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_21" sourceRef="U_T8" targetRef="U_Sub2" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_26" sourceRef="U_Sub2" targetRef="U_Tm2" />
+    <bpmn:sequenceFlow id="Flow_Pool_Uni_27" sourceRef="U_Tm2" targetRef="U_End" />
+    <bpmn:subProcess id="U_Sub2" name="Upis studenata">
+      <bpmn:incoming>Flow_Pool_Uni_21</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pool_Uni_26</bpmn:outgoing>
+      <bpmn:startEvent id="U_S2s" name="Početak upisa">
+        <bpmn:outgoing>Flow_Pool_Uni_22</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:userTask id="U_S2a" name="Upisati studenta u internu aplikaciju">
+        <bpmn:incoming>Flow_Pool_Uni_22</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_Uni_23</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sendTask id="U_S2b" name="Poslati upisnu dokumentaciju e-mailom">
+        <bpmn:incoming>Flow_Pool_Uni_23</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_Uni_24</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:serviceTask id="U_S2c" name="Arhivirati dokumentaciju">
+        <bpmn:incoming>Flow_Pool_Uni_24</bpmn:incoming>
+        <bpmn:outgoing>Flow_Pool_Uni_25</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:endEvent id="U_S2e" name="Student upisan">
+        <bpmn:incoming>Flow_Pool_Uni_25</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_Pool_Uni_22" sourceRef="U_S2s" targetRef="U_S2a" />
+      <bpmn:sequenceFlow id="Flow_Pool_Uni_23" sourceRef="U_S2a" targetRef="U_S2b" />
+      <bpmn:sequenceFlow id="Flow_Pool_Uni_24" sourceRef="U_S2b" targetRef="U_S2c" />
+      <bpmn:sequenceFlow id="Flow_Pool_Uni_25" sourceRef="U_S2c" targetRef="U_S2e" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Pool_NISpVU_di" bpmnElement="Pool_NISpVU" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="3420" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pool_Uni_di" bpmnElement="Pool_Uni" isHorizontal="true">
+        <dc:Bounds x="160" y="220" width="3420" height="580" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Pool_Uni_2_di" bpmnElement="Lane_Pool_Uni_2" isHorizontal="true">
+        <dc:Bounds x="190" y="620" width="3390" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Pool_Uni_1_di" bpmnElement="Lane_Pool_Uni_1" isHorizontal="true">
+        <dc:Bounds x="190" y="220" width="3390" height="400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_Start_di" bpmnElement="U_Start">
+        <dc:Bounds x="272" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="245" y="442" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_GA_di" bpmnElement="U_GA" isMarkerVisible="true">
+        <dc:Bounds x="415" y="395" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T1_di" bpmnElement="U_T1">
+        <dc:Bounds x="540" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_G1_di" bpmnElement="U_G1" isMarkerVisible="true">
+        <dc:Bounds x="715" y="395" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="685" y="449" width="110" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T2_di" bpmnElement="U_T2">
+        <dc:Bounds x="840" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T3_di" bpmnElement="U_T3">
+        <dc:Bounds x="990" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_Sub1_di" bpmnElement="U_Sub1" isExpanded="false">
+        <dc:Bounds x="840" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T4_di" bpmnElement="U_T4">
+        <dc:Bounds x="990" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T5_di" bpmnElement="U_T5">
+        <dc:Bounds x="1140" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_Tm1_di" bpmnElement="U_Tm1">
+        <dc:Bounds x="1322" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1305" y="446" width="69" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_G2_di" bpmnElement="U_G2" isMarkerVisible="true">
+        <dc:Bounds x="1465" y="395" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1435" y="449" width="110" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_GB_di" bpmnElement="U_GB" isMarkerVisible="true">
+        <dc:Bounds x="1615" y="395" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T6_di" bpmnElement="U_T6">
+        <dc:Bounds x="1740" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_G3_di" bpmnElement="U_G3" isMarkerVisible="true">
+        <dc:Bounds x="1915" y="395" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1902" y="373" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T7_di" bpmnElement="U_T7">
+        <dc:Bounds x="2040" y="670" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_G4_di" bpmnElement="U_G4" isMarkerVisible="true">
+        <dc:Bounds x="2215" y="395" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2192" y="373" width="97" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_T8_di" bpmnElement="U_T8">
+        <dc:Bounds x="2340" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_Tm2_di" bpmnElement="U_Tm2">
+        <dc:Bounds x="3272" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3245" y="442" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_End_di" bpmnElement="U_End">
+        <dc:Bounds x="3422" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3395" y="442" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_Sub2_di" bpmnElement="U_Sub2" isExpanded="true">
+        <dc:Bounds x="2497" y="352" width="686" height="135" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_S2s_di" bpmnElement="U_S2s">
+        <dc:Bounds x="2522" y="404" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2505" y="444" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_S2a_di" bpmnElement="U_S2a">
+        <dc:Bounds x="2640" y="382" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_S2b_di" bpmnElement="U_S2b">
+        <dc:Bounds x="2790" y="382" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_S2c_di" bpmnElement="U_S2c">
+        <dc:Bounds x="2940" y="382" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_S2e_di" bpmnElement="U_S2e">
+        <dc:Bounds x="3122" y="404" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3103" y="444" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_22_di" bpmnElement="Flow_Pool_Uni_22">
+        <di:waypoint x="2558" y="422" />
+        <di:waypoint x="2640" y="422" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_23_di" bpmnElement="Flow_Pool_Uni_23">
+        <di:waypoint x="2740" y="422" />
+        <di:waypoint x="2790" y="422" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_24_di" bpmnElement="Flow_Pool_Uni_24">
+        <di:waypoint x="2890" y="422" />
+        <di:waypoint x="2940" y="422" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_25_di" bpmnElement="Flow_Pool_Uni_25">
+        <di:waypoint x="3040" y="422" />
+        <di:waypoint x="3122" y="422" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_1_di" bpmnElement="Flow_Pool_Uni_1">
+        <di:waypoint x="308" y="420" />
+        <di:waypoint x="415" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_2_di" bpmnElement="Flow_Pool_Uni_2">
+        <di:waypoint x="465" y="420" />
+        <di:waypoint x="540" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_3_di" bpmnElement="Flow_Pool_Uni_3">
+        <di:waypoint x="640" y="420" />
+        <di:waypoint x="715" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_4_di" bpmnElement="Flow_Pool_Uni_4">
+        <di:waypoint x="740" y="395" />
+        <di:waypoint x="740" y="310" />
+        <di:waypoint x="840" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="716" y="349" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_5_di" bpmnElement="Flow_Pool_Uni_5">
+        <di:waypoint x="940" y="310" />
+        <di:waypoint x="990" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_6_di" bpmnElement="Flow_Pool_Uni_6">
+        <di:waypoint x="1040" y="270" />
+        <di:waypoint x="1040" y="232" />
+        <di:waypoint x="440" y="232" />
+        <di:waypoint x="440" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_7_di" bpmnElement="Flow_Pool_Uni_7">
+        <di:waypoint x="765" y="420" />
+        <di:waypoint x="840" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="786" y="393" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_8_di" bpmnElement="Flow_Pool_Uni_8">
+        <di:waypoint x="940" y="420" />
+        <di:waypoint x="990" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_9_di" bpmnElement="Flow_Pool_Uni_9">
+        <di:waypoint x="1090" y="420" />
+        <di:waypoint x="1140" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_10_di" bpmnElement="Flow_Pool_Uni_10">
+        <di:waypoint x="1240" y="420" />
+        <di:waypoint x="1322" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_11_di" bpmnElement="Flow_Pool_Uni_11">
+        <di:waypoint x="1358" y="420" />
+        <di:waypoint x="1465" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_12_di" bpmnElement="Flow_Pool_Uni_12">
+        <di:waypoint x="1515" y="420" />
+        <di:waypoint x="1615" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1552" y="403" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_13_di" bpmnElement="Flow_Pool_Uni_13">
+        <di:waypoint x="1490" y="395" />
+        <di:waypoint x="1490" y="232" />
+        <di:waypoint x="2390" y="232" />
+        <di:waypoint x="2390" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1502" y="333" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_14_di" bpmnElement="Flow_Pool_Uni_14">
+        <di:waypoint x="1665" y="420" />
+        <di:waypoint x="1740" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_15_di" bpmnElement="Flow_Pool_Uni_15">
+        <di:waypoint x="1840" y="420" />
+        <di:waypoint x="1915" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_16_di" bpmnElement="Flow_Pool_Uni_16">
+        <di:waypoint x="1940" y="445" />
+        <di:waypoint x="1940" y="710" />
+        <di:waypoint x="2040" y="710" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1952" y="533" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_17_di" bpmnElement="Flow_Pool_Uni_17">
+        <di:waypoint x="2140" y="710" />
+        <di:waypoint x="2185" y="710" />
+        <di:waypoint x="2185" y="420" />
+        <di:waypoint x="2215" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_18_di" bpmnElement="Flow_Pool_Uni_18">
+        <di:waypoint x="1965" y="420" />
+        <di:waypoint x="2215" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2042" y="403" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_19_di" bpmnElement="Flow_Pool_Uni_19">
+        <di:waypoint x="2240" y="445" />
+        <di:waypoint x="2240" y="608" />
+        <di:waypoint x="1640" y="608" />
+        <di:waypoint x="1640" y="445" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2252" y="503" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_20_di" bpmnElement="Flow_Pool_Uni_20">
+        <di:waypoint x="2265" y="420" />
+        <di:waypoint x="2340" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2273" y="396" width="40" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_21_di" bpmnElement="Flow_Pool_Uni_21">
+        <di:waypoint x="2440" y="420" />
+        <di:waypoint x="2497" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_26_di" bpmnElement="Flow_Pool_Uni_26">
+        <di:waypoint x="3183" y="420" />
+        <di:waypoint x="3272" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Pool_Uni_27_di" bpmnElement="Flow_Pool_Uni_27">
+        <di:waypoint x="3308" y="420" />
+        <di:waypoint x="3422" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_1_di" bpmnElement="MsgFlow_1">
+        <di:waypoint x="290" y="140" />
+        <di:waypoint x="290" y="402" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="295" y="173" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_2_di" bpmnElement="MsgFlow_2">
+        <di:waypoint x="890" y="270" />
+        <di:waypoint x="890" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="808" y="166" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_3_di" bpmnElement="MsgFlow_3">
+        <di:waypoint x="1040" y="140" />
+        <di:waypoint x="1040" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1044" y="166" width="71" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="U_Sub1" />
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
